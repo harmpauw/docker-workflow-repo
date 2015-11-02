@@ -53,14 +53,9 @@ node {
     }
 
     input "How do you like ${env.BUILD_URL}artifact/screenshot.jpg ?"
-
-    input message: 'Test?', ok: 'Okee', parameters: [[$class: 'StringParameterDefinition', defaultValue: '', description: '', name: 'weq']]
-
-
-
+    
     stage name: 'Promote Image', concurrency: 1
     // All the tests passed. We can now retag and push the 'latest' image.
     pcImg.push('latest')
-    pcImg.push("${weq}")
   }
 }
