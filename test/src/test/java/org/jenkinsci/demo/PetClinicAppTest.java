@@ -17,6 +17,6 @@ public class PetClinicAppTest {
     }
 
     private String getAppUrl() {
-        return "http://petclinic:8080/petclinic";
+        return "http://petclinic:8080/";
     }
 }

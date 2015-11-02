@@ -1,3 +1,7 @@
-FROM tfennelly/tomcat7
+FROM tomcat:8.0
+MAINTAINER Harm Pauw <h.pauw@prowareness.nl>
 
-ADD target/petclinic.war /tomcat7/webapps/petclinic.war
+RUN ["rm", "-fr", "/usr/local/tomcat/webapps/ROOT"]
+ADD target/petclinic.war /usr/local/tomcat/webapps/ROOT.war
+
+CMD ["catalina.sh", "run"]
