@@ -50,7 +50,8 @@ node {
         }
       }
     }
-    input "How do you like ${env.BUILD_URL}artifact/screenshot.jpg?"
+
+    input "How do you like ${env.BUILD_URL}artifact/screenshot.jpg ?"
 
     stage name: 'Promote Image', concurrency: 1
     // All the tests passed. We can now retag and push the 'latest' image.
