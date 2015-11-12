@@ -16,7 +16,7 @@ node {
     stage 'Build'
     // Spin up a Maven container to build the petclinic app from source.
     // First set up a shared Maven repo so we don't need to download all dependencies on every build.
-    writeFile file: 'settings.xml', text: '<settings><localRepository>/m2repo</localRepository></settings>'
+    //writeFile file: 'settings.xml', text: '<settings><profiles></profiles><localRepository>/m2repo</localRepository></settings>'
     // (we are only using -v here to share the Maven local repository across demo runs; otherwise would set localRepository=${pwd()}/m2repo)
     maven.inside('-v /m2repo:/m2repo') {
       // Build with Maven settings.xml file that specs the local Maven repo.
@@ -53,7 +53,7 @@ node {
     }
 
     input "How do you like ${env.BUILD_URL}artifact/screenshot.jpg ?"
-    
+
     stage name: 'Promote Image', concurrency: 1
     // All the tests passed. We can now retag and push the 'latest' image.
     pcImg.push('latest')
