@@ -18,7 +18,7 @@ node {
     // First set up a shared Maven repo so we don't need to download all dependencies on every build.
     //writeFile file: 'settings.xml', text: '<settings><profiles></profiles><localRepository>/m2repo</localRepository></settings>'
     // (we are only using -v here to share the Maven local repository across demo runs; otherwise would set localRepository=${pwd()}/m2repo)
-    maven.inside('-v /m2repo:/m2repo') {
+    maven.inside('-v /m2repo:/m2repo --add-host=sonarqube:172.17.0.9') {
       // Build and do Sonar analysis with Maven settings.xml file that specs the local Maven repo.
       sh('mvn -f app -B -s settings.xml -DskipTests clean sonar:sonar package')
 
