@@ -9,7 +9,7 @@
                     http://sonarqube:9000
                 </sonar.host.url>
                 <sonar.jdbc.url>
-                    jdbc:h2:tcp://sonarqube/sonar
+                    jdbc:h2:tcp://172.17.0.9/sonar
                 </sonar.jdbc.url>
             </properties>
         </profile>
