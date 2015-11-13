@@ -34,7 +34,7 @@ node {
     // (see above maven.inside() block), so we specify that.
     // The Dockerfile expects the petclinic.war file to be in the 'target' dir
     // relative to its own directory, which will be the case.
-    docker.build("examplecorp/spring-petclinic:${env.BUILD_TAG}", 'app')
+    pcImg = docker.build("examplecorp/spring-petclinic:${env.BUILD_TAG}", 'app')
 
     // Let us tag and push the newly built image. Will tag using the image name provided
     // in the 'docker.build' call above (which included the build number on the tag).
@@ -61,7 +61,6 @@ input "How do you like ${env.BUILD_URL}artifact/screenshot.jpg ?"
 node {
 
   docker.withRegistry('https://docker.example.com/', 'docker-registry-login') {
-
     stage name: 'Promote Image', concurrency: 1
     // All the tests passed. We can now retag and push the 'latest' image.
     pcImg.push('latest')
