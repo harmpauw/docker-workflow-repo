@@ -10,16 +10,10 @@ node {
   // (If you could set your registry below to mirror Docker Hub,
   // this would be unnecessary as maven.inside would pull the image.)
   maven.pull()
-  // We are pushing to a private secure Docker registry in this demo.
-  // 'docker-registry-login' is the username/password credentials ID as defined in Jenkins Credentials.
-  // This is used to authenticate the Docker client to the registry.
+
   docker.withRegistry('https://docker.example.com/', 'docker-registry-login') {
 
     stage 'Build'
-    // Spin up a Maven container to build the petclinic app from source.
-    // First set up a shared Maven repo so we don't need to download all dependencies on every build.
-    //writeFile file: 'settings.xml', text: '<settings><profiles></profiles><localRepository>/m2repo</localRepository></settings>'
-    // (we are only using -v here to share the Maven local repository across demo runs; otherwise would set localRepository=${pwd()}/m2repo)
     maven.inside('-v /m2repo:/m2repo') {
       // Build and do Sonar analysis with Maven settings.xml file that specs the local Maven repo.
       sh 'mvn -f app -B -s settings.xml -DskipTests clean package'
@@ -30,10 +24,6 @@ node {
     stage 'Bake Docker image'
     // Use the spring-petclinic Dockerfile (see above 'maven.inside()' block)
     // to build a container that can run the app.
-    // The Dockerfile is in the app subdir of the active workspace
-    // (see above maven.inside() block), so we specify that.
-    // The Dockerfile expects the petclinic.war file to be in the 'target' dir
-    // relative to its own directory, which will be the case.
     pcImg = docker.build("examplecorp/spring-petclinic:${env.BUILD_TAG}", 'app')
 
     // Let us tag and push the newly built image. Will tag using the image name provided
