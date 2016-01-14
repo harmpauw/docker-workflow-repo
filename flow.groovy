@@ -22,7 +22,7 @@ node {
     // (we are only using -v here to share the Maven local repository across demo runs; otherwise would set localRepository=${pwd()}/m2repo)
     maven.inside('-v /m2repo:/m2repo') {
       // Build and do Sonar analysis with Maven settings.xml file that specs the local Maven repo.
-      sh('mvn -f app -B -s settings.xml -DskipTests clean sonar:sonar package')
+      mvn '-f app -B -s settings.xml -DskipTests clean package'
 
       // The app .war and Dockerfile are now available in the workspace. See below.
     }
@@ -49,7 +49,7 @@ node {
       testImg.inside("-v /m2repo:/m2repo --link=${petclinic.id}:petclinic") {
         // https://github.com/jenkinsci/workflow-plugin/blob/master/basic-steps/CORE-STEPS.md#build-wrappers
         wrap([$class: 'Xvnc', takeScreenshot: true, useXauthority: true]) {
-          sh 'mvn -f test -B -s settings.xml clean test'
+          mvn '-f test -B -s settings.xml clean test'
         }
       }
     }
@@ -67,3 +67,6 @@ node {
   }
 }
 
+def mvn = function(args) {
+  sh "mvn ${args}"
+}
