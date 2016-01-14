@@ -67,6 +67,3 @@ node {
   }
 }
 
-def mvn = function(args) {
-  sh "mvn ${args}"
-}
